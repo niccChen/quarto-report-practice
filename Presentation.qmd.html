@@ -1,0 +1,77 @@
+---
+title: "Presentation"
+author: "Nicole Chen"
+date: "2025-02-24"
+output:
+  revealjs::revealjs_presentation:
+    theme: simple
+    transition: fade
+---
+
+## Introduction
+This presentation aims to present all key findings and visualizations from the report with the WorldBank dataset. It will include a title slide, a few content slides, and a concluding slide, with summaries of findings for all figures. 
+
+---
+
+# Data & Setup
+```{python setup, include=False}
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+df = pd.read_csv("wdi.csv")
+df.head()
+```
+
+## Findings in Visualisations 
+```{python}
+# Scatter Plot of Exports vs. Education Expenditure
+plt.figure(figsize=(8,6))
+sns.scatterplot(data=df, x='exports_gdp_share', y='education_expenditure_gdp_share', hue='country', palette='coolwarm', s=100, legend=False)
+plt.title("Exports as a Share of GDP vs. Education Expenditure")
+plt.xlabel("Exports as a Share of GDP (%)")
+plt.ylabel("Education Expenditure as a Share of GDP (%)")
+plt.show()
+
+# Scatter Plot of Exports vs. Life Expectancy
+plt.figure(figsize=(8,6))
+sns.scatterplot(data=df, x='exports_gdp_share', y='life_expectancy', hue='country', palette='coolwarm', s=100, legend=False)
+plt.title("Exports as a Share of GDP vs. Life Expectancy")
+plt.xlabel("Exports as a Share of GDP (%)")
+plt.ylabel("Life Expectancy (Years)")
+plt.show()
+```
+
+## Findings 1: 
+Exports as a Share of GDP vs. Education Expenditure
+The scatter plot suggests little direct correlation between these two variables. Some countries with high education spending have low exports, while others with high exports allocate less to education, reflecting varied national economic strategies.
+
+Exports as a Share of GDP vs. Life Expectancy
+A weak positive trend suggests that countries with a higher export share may experience better life expectancy, potentially due to increased economic stability and access to healthcare resources.
+
+---
+
+```{python, echo=False}
+# Distribution of Life Expectancy
+plt.figure(figsize=(10,6))
+sns.histplot(df['life_expectancy'].dropna(), bins=30, kde=True, color='green')
+plt.title("Distribution of Life Expectancy")
+plt.xlabel("Life Expectancy (Years)")
+plt.ylabel("Frequency")
+plt.show()
+
+# Boxplot of Life Expectancy
+plt.figure(figsize=(10,6))
+sns.boxplot(x=df['life_expectancy'], color='purple')
+plt.title("Boxplot of Life Expectancy")
+plt.xlabel("Life Expectancy (Years)")
+plt.show()
+```
+
+## Findings 2:
+Life Expectancy Distribution
+The distribution suggests most countries have life expectancy between 60 and 80 years, with a few outliers at both extremes. Nations with very high life expectancy likely benefit from robust healthcare systems and high living standards.
+
+Boxplot of Life Expectancy
+The boxplot provides additional insights into life expectancy variation among countries. While most countries fall within a certain range, some outliers suggest extreme disparities, potentially linked to healthcare access and quality.
+
+---

@@ -1,0 +1,131 @@
+---
+title: "EDA Analyis Report"
+author: "Nicole Chen"
+date: "2025-02-24"
+output:
+  pdf_document: default
+bibliography: "/Users/chenyiyun/Desktop/QTM_350/references.bib"
+---
+
+# Introduction
+This report aims to present an exploratory data analysis of the World Bank data for the "World" region in 2022[@worldbank2022]. We will focus on three key indicators - "Life Expectancy, Exports as a Share of GDP, and Education Expenditure as a Share of GDP" - and include visualizations and statistical summaries.
+
+```{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+```
+
+# Data Loading
+```{python}
+df = pd.read_csv("wdi.csv")
+df.head()
+```
+
+# Exploratory Data Analysis for Three Factors 
+
+## Data Overview
+Table @ref(tab:summary-table) provides a summary of key economic indicators used in this analysis.
+
+```{python}
+df.info()
+df.describe()
+```
+
+## Checking for Missing Values
+```{python}
+df.isnull().sum()
+```
+
+## Factor 1: Life Expectancy
+```{python}
+df["life_expectancy"].describe()
+```
+
+## Factor 2: Exports as a Share of GDP
+```{python}
+df["exports_gdp_share"].describe()
+```
+
+## Factor 3: Education Expenditure as a Share of GDP
+```{python}
+df["education_expenditure_gdp_share"].describe()
+```
+
+# Visualizations
+
+## Distribution of Life Expectancy
+```{python}
+plt.figure(figsize=(5,3))
+sns.histplot(df["life_expectancy"].dropna(), bins=30, kde=True, color="green")
+plt.title("Distribution of Life Expectancy")
+plt.xlabel("Life Expectancy (Years)")
+plt.ylabel("Frequency")
+plt.show()
+```
+: Distribution of Life Expectancy {#fig:life-expectancy}
+
+## Findings 1:
+As shown in @ref(fig:life-expectancy), most countries have a life expectancy between 60 and 80 years. There are outliers with low life expectancy, which could indicate conflicts or poor healthcare.
+
+# Boxplot of Life Expectancy
+```{python}
+plt.figure(figsize=(5,3))
+sns.boxplot(x=df['life_expectancy'], color='purple')
+plt.title("Boxplot of Life Expectancy")
+plt.xlabel("Life Expectancy (Years)")
+plt.show()
+```
+: Boxplot of Life Expectancy {#fig:life-expectancy2}
+
+## Findings 2:
+As shown in @ref(fig:life-expectancy2), the boxplot confirms the presence of lower outliers in life expectancy. The median value is around 72 years, aligning with the statistical summary.
+
+## Scatter Plot of Exports vs. Education Expenditure
+
+Figure @ref(fig:exports-vs-education) illustrates the relationship between Exports as a Share of GDP and Education Expenditure.
+
+```{python}
+plt.figure(figsize=(5,3))
+sns.scatterplot(data=df, x="exports_gdp_share", y="education_expenditure_gdp_share", hue="country", palette="coolwarm", s=100, legend=False)
+plt.title("Exports as a Share of GDP vs. Education Expenditure")
+plt.xlabel("Exports as a Share of GDP (%)")
+plt.ylabel("Education Expenditure as a Share of GDP (%)")
+plt.show()
+```
+: Relationship between Exports as a Share of GDP and Education Expenditure {#fig:exports-vs-education}
+
+## Findings 3:
+As shown in @ref(fig:exports-vs-education), Countries with higher exports do not necessarily allocate more to education. This suggests that economic priorities vary, with some nations investing heavily in education regardless of trade levels.
+
+# Scatter Plot of Exports vs. Life Expectancy
+```{python}
+plt.figure(figsize=(5,3))
+sns.scatterplot(data=df, x='exports_gdp_share', y='life_expectancy', hue='country', palette='coolwarm', s=100, legend=False)
+plt.title("Exports as a Share of GDP vs. Life Expectancy")
+plt.xlabel("Exports as a Share of GDP (%)")
+plt.ylabel("Life Expectancy (Years)")
+plt.show()
+```
+: Relationship between Exports as a Share of GDP and Life Expectancy {#fig:exports-vs-life-expectancy}
+
+## Findings 3:
+As shown in @ref(fig:exports-vs-life-expectancy), exports as a share of GDP shows high variability, with some economies relying heavily on trade while others do not. Also, education expenditure varies widely, suggesting different government spending priorities.
+
+# Summary Table
+
+Table @ref(tab:summary-table) provides a statistical summary of the three key indicators.
+
+```{python}
+summary_table = df[["life_expectancy", "exports_gdp_share", "education_expenditure_gdp_share"]].describe()
+summary_table
+```
+: Summary statistics of selected World Bank indicators {#tab:summary-table}
+
+# Cross-Referenced Discussion
+
+As shown in **Table @ref(tab:summary-table)**, the mean life expectancy is approximately 72 years, with a significant variation among countries. **Figure @ref(fig:exports-vs-education)** suggests that there is no strong correlation between Exports as a Share of GDP and Education Expenditure, indicating different national priorities regarding trade and education funding.
+
+Furthermore, **Figure @ref(fig:life-expectancy)** demonstrates that life expectancy varies widely among nations, with most countries clustering between 60 and 80 years. This aligns with global health disparities highlighted in prior research [@worldbank2022; @un2021].
+
+# References
