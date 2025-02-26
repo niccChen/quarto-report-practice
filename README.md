@@ -1,3 +1,2 @@
-Published Report: https://github.com/niccChen/qtm350assignment5 
-Presentation: Presentation.html 
-PDF Report: Report.pdf 
+Published Report: https://niccchen.github.io/qtm350assignment5/Report.html
+Published Presentation: https://niccchen.github.io/qtm350assignment5/Presentation.html
