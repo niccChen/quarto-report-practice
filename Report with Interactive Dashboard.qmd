@@ -9,7 +9,7 @@ output:
   pdf_document: default
 ---
 
-# Introduction
+## Introduction
 This report presents an exploratory data analysis (EDA) of World Bank indicator data for the "World" region in 2022. It includes an interactive dashboard for several figures.
 
 ```{python setup, include=False}
@@ -22,7 +22,7 @@ pn.extension()
 df = pd.read_csv("wdi.csv")
 ```
 
-# Interactive Dashboard
+## Interactive Dashboard
 ```{python}
 # Create interactive widgets
 country_selector = pn.widgets.Select(name='Country', options=['All'] + sorted(df['country'].dropna().unique().tolist()))
@@ -35,14 +35,17 @@ def plot_indicator(country, indicator):
     if data.empty:
         return 'No data available for the selected country.'
     
-    plt.figure(figsize=(8, 4))
+    plt.figure(figsize=(6, 3))
     sns.histplot(data[indicator], bins=30, kde=True, color='blue')
     plt.title(f"{indicator.replace('_', ' ').title()} Distribution ({country})")
     plt.xlabel(indicator.replace('_', ' ').title())
     plt.ylabel("Frequency")
     plt.grid(True)
     plt.show()
+```
 
+## Interactive Dashboard
+```{python}
 @pn.depends(country=country_selector.param.value)
 def plot_scatter(country):
     data = df if country == 'All' else df[df['country'] == country]
